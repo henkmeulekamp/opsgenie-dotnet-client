@@ -17,6 +17,9 @@ namespace OpsGenieApi
 
         public ApiResponse Raise(Alert alert)
         {
+            if(alert == null || string.IsNullOrWhiteSpace(alert.Message))
+                throw new ArgumentException("Alert message is required", "alert");
+
             var client = new JsonServiceClient();
 
             try
@@ -56,9 +59,37 @@ namespace OpsGenieApi
             }        
         }
 
-        public ApiResponse Acknowledge(Alert alert)
+        public ApiResponse Acknowledge(string alertId, string alias, string note)
         {
-            return new ApiResponse();
+            var client = new JsonServiceClient();
+
+            try
+            {
+                var closeAlert = new
+                {
+                    apiKey = _config.ApiKey,
+                    id = alertId,
+                    alias,
+                    note,
+                };
+
+
+                var response = client.Post<ApiResponse>(_config.ApiUrl + "/acknowledge", closeAlert);
+
+                Trace.WriteLine(response);
+
+                if (response.IsOk())
+                {
+                    response.Ok = true;
+                    return response;
+                }
+                return response.ToErrorResponse<ApiResponse>();
+            }
+            catch (Exception e)
+            {
+                return new ApiResponse().ToErrorResponse(e);
+            }        
+
         }
 
         public ApiResponse Close(string alertId, string alias, string note)
