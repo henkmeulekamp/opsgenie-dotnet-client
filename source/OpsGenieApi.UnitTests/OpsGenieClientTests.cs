@@ -109,5 +109,53 @@ namespace OpsGenieApi.UnitTests
         }
 
 
+
+        [Test]
+        public void AckAndClose()
+        {
+            var client = CreateClient();
+
+            var response = client.Raise(new Alert
+            {
+                Alias = Guid.NewGuid().ToString(),
+                Description = "Unittest alert",
+                Source = "Developer",
+                Message = "Testing api - CloseByAlertId",
+                Note = "Just kill this alert.."
+            });
+
+            Trace.WriteLine(response.ToJson());
+            Assert.IsTrue(response.Ok, "Should succesfully create new alert");
+
+            var responseAck = client.Acknowledge(response.AlertId, null, "Ack, working on it");
+            
+            Trace.WriteLine(responseAck.ToJson());
+            Assert.IsTrue(responseAck.Ok, "Should succesfully ackowledge");
+
+            var responseClose = client.Close(response.AlertId, null, "Closing alert, all ok");
+
+            Trace.WriteLine(responseClose.ToJson());
+            Assert.IsTrue(responseClose.Ok, "Should succesfully close");
+
+        }
+
+
+        public void x()
+        {
+            var opsClient = new OpsGenieClient(new OpsGenieClientConfig
+            {
+                ApiKey = ".. your api key",
+                ApiUrl = "https://api.opsgenie.com/v1/json/alert"
+            });
+
+            var response = opsClient.Raise(new Alert {Alias = "alert2", Source = "Test", Message = "All systems down"});
+
+            if (response.Ok)
+            {
+                var respAck =  opsClient.Acknowledge(response.AlertId, null, "Working on it!");
+
+                var respClose = opsClient.Close(response.AlertId, null, "Fixed by ..");
+            }
+        }
     }
 }

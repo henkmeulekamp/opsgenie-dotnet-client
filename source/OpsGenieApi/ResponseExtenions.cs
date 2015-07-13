@@ -1,12 +1,8 @@
 ﻿using System;
 
 namespace OpsGenieApi
-{
-    // Implements alert api opsgenie
-    // see https://www.opsgenie.com/docs/web-api/alert-api
-
-
-    internal static class ResponseExtenions
+{   
+    internal static class ResponseExtensions
     {
         public static T ToErrorResponse<T>(this T response, Exception e)
              where T : IApiResponse

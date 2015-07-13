@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Security;
 
 namespace OpsGenieApi.Model
 {
+    // opsgenie api classes
+
     internal class Alert
     {
         public string id { get; set; }

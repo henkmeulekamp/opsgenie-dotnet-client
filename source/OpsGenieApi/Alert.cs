@@ -24,5 +24,7 @@ namespace OpsGenieApi
         /// Additonal note
         /// </summary>
         public string Note { get; set; }
+
+        public List<string> Recipients { get; set; }
     }
 }

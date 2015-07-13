@@ -6,6 +6,8 @@ using ServiceStack;
 
 namespace OpsGenieApi
 {
+    // Implements alert api opsgenie
+    // see https://www.opsgenie.com/docs/web-api/alert-api
     public class OpsGenieClient
     {
         private readonly OpsGenieClientConfig _config;
@@ -47,7 +49,7 @@ namespace OpsGenieApi
                     response.Ok = true;
                     response.Alert = new Alert
                     {
-                        Alertid = response.AlertId
+                        Alertid = response.AlertId //new alert id
                     };
                     return response;
                 }
@@ -143,7 +145,7 @@ namespace OpsGenieApi
                         Ok = true,
                         Status = response.Status,
                         Alerts = response.alerts.Select(a=>
-                            new Alert
+                            new Alert //todo more properties
                             {
                                 Alertid = a.id,
                                 Message = a.message,

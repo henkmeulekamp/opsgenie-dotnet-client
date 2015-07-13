@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpsGenieApi", "OpsGenieApi\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpsGenieApi.UnitTests", "OpsGenieApi.UnitTests\OpsGenieApi.UnitTests.csproj", "{F61EC437-D632-466F-84B4-D899B3E0D927}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpsGenieCli", "OgCli\OpsGenieCli.csproj", "{BD2246B9-34BB-4705-B4B9-F1431A804925}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F61EC437-D632-466F-84B4-D899B3E0D927}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F61EC437-D632-466F-84B4-D899B3E0D927}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F61EC437-D632-466F-84B4-D899B3E0D927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD2246B9-34BB-4705-B4B9-F1431A804925}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD2246B9-34BB-4705-B4B9-F1431A804925}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD2246B9-34BB-4705-B4B9-F1431A804925}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD2246B9-34BB-4705-B4B9-F1431A804925}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
