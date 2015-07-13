@@ -1,9 +1,13 @@
-# OpsGenie Dotnet APi Client
+# OpsGenie Dotnet API Client
   
 Simple C# dotnet client for OpsGenie Alert Api.
   
 Including a cli client to raise, ack and resolve alerts. 
   
+See OpsGenie alert api documentation:  
+https://www.opsgenie.com/docs/web-api/alert-api
+  
+ 
 ## 
   
  Exampl Raise, Acknowledge and Close:
@@ -30,7 +34,10 @@ Including a cli client to raise, ack and resolve alerts.
 	}
  
  ```
-  
+ Published the library to nuget for easy reuse:
+```
+Install-Package Simple.OpsGenieApi
+``` 
   
 ## Cli interface
 
@@ -77,3 +84,5 @@ It has the following nuget dependencies:
 
 - improve code, error handling, more tests
 - cleanup interface 
+
+Requests/Comments? Let me know..
