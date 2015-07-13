@@ -31,12 +31,12 @@ namespace OpsGenieApi
                     apiKey = _config.ApiKey,
                     message = alert.Message,
                     alias = alert.Alias,
-                    //recipients = alert.,
+                    recipients = alert.Recipients,
                     source = alert.Source,
                     description = alert.Description,
-                    //tags ="",
+                    tags = alert.Tags,
                     note = alert.Note,
-                    //teams ="",
+                    teams = alert.Teams
                 };
 
 

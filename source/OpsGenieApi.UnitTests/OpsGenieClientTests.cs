@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using NUnit.Framework;
@@ -52,6 +53,27 @@ namespace OpsGenieApi.UnitTests
                 Source = "Developer",
                 Message = "Testing api",
                 Note = "Just kill this alert.."
+            });
+
+            Trace.WriteLine(response.ToJson());
+            Assert.IsTrue(response.Ok);
+        }
+
+
+        [Test]
+        public void RaisetoTeam()
+        {
+            var client = CreateClient();
+
+            var response = client.Raise(new Alert
+            {
+                Alias = new Guid().ToString(),
+                Description = "Unittest alert",
+                Source = "Developer",
+                Message = "Testing team api",
+                Note = "Just kill this alert..",
+                Teams = new List<string> { "Henk J Meulekamp"}
+
             });
 
             Trace.WriteLine(response.ToJson());
@@ -140,22 +162,23 @@ namespace OpsGenieApi.UnitTests
         }
 
 
-        public void x()
-        {
-            var opsClient = new OpsGenieClient(new OpsGenieClientConfig
-            {
-                ApiKey = ".. your api key",
-                ApiUrl = "https://api.opsgenie.com/v1/json/alert"
-            });
+        //Code example readme
+        //public void x()
+        //{
+        //    var opsClient = new OpsGenieClient(new OpsGenieClientConfig
+        //    {
+        //        ApiKey = ".. your api key",
+        //        ApiUrl = "https://api.opsgenie.com/v1/json/alert"
+        //    });
 
-            var response = opsClient.Raise(new Alert {Alias = "alert2", Source = "Test", Message = "All systems down"});
+        //    var response = opsClient.Raise(new Alert {Alias = "alert2", Source = "Test", Message = "All systems down"});
 
-            if (response.Ok)
-            {
-                var respAck =  opsClient.Acknowledge(response.AlertId, null, "Working on it!");
+        //    if (response.Ok)
+        //    {
+        //        var respAck =  opsClient.Acknowledge(response.AlertId, null, "Working on it!");
 
-                var respClose = opsClient.Close(response.AlertId, null, "Fixed by ..");
-            }
-        }
+        //        var respClose = opsClient.Close(response.AlertId, null, "Fixed by ..");
+        //    }
+        //}
     }
 }
