@@ -15,7 +15,12 @@ Including a cli client to raise, ack and resolve alerts.
 	    ApiUrl = "https://api.opsgenie.com/v1/json/alert"
 	});
 	
-	var response = opsClient.Raise(new Alert {Alias = "alert2", Source = "Test", Message = "All systems down"});
+	var response = opsClient.Raise(new Alert 
+	{
+	    Alias = "alert2", 
+	    Source = "Test", 
+	    Message = "All systems down"
+	});
 	
 	if (response.Ok)
 	{
