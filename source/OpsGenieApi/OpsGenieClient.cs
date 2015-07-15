@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using OpsGenieApi.Helpers;
 using OpsGenieApi.Model;
-using ServiceStack;
 
 namespace OpsGenieApi
 {
@@ -22,7 +22,7 @@ namespace OpsGenieApi
             if(alert == null || string.IsNullOrWhiteSpace(alert.Message))
                 throw new ArgumentException("Alert message is required", "alert");
 
-            var client = new JsonServiceClient();
+            var client = new HttpHelper();
 
             try
             {
@@ -63,7 +63,7 @@ namespace OpsGenieApi
 
         public ApiResponse Acknowledge(string alertId, string alias, string note)
         {
-            var client = new JsonServiceClient();
+            var client = new HttpHelper();
 
             try
             {
@@ -96,7 +96,7 @@ namespace OpsGenieApi
 
         public ApiResponse Close(string alertId, string alias, string note)
         {
-            var client = new JsonServiceClient();
+            var client = new HttpHelper();
 
             try
             {
@@ -132,7 +132,7 @@ namespace OpsGenieApi
             var url = string.Format("{0}?apiKey={1}&status=open&limit={2}",
                 _config.ApiUrl, _config.ApiKey, maxNumber);
 
-            var client = new JsonServiceClient();
+            var client = new HttpHelper();
 
             try
             {
