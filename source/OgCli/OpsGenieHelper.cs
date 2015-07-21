@@ -1,6 +1,6 @@
 using System.Xml;
-using System.Xml.Serialization;
 using OpsGenieApi;
+using XmlSerializer = System.Xml.Serialization.XmlSerializer;
 
 namespace OpsGenieCli
 {
@@ -8,7 +8,7 @@ namespace OpsGenieCli
     {     
         public static OpsGenieClient CreateOpsGenieClient(OpsGenieClientConfig config)
         {
-            return new OpsGenieClient(config);
+            return new OpsGenieClient(config, new MyPreferedJsonizer());
         }
         
         public static OpsGenieClientConfig GetOpsGenieConfig(string configPath)
@@ -16,6 +16,7 @@ namespace OpsGenieCli
             var serializer = new XmlSerializer(typeof(OpsGenieClientConfig));
             return (OpsGenieClientConfig)serializer.Deserialize(new XmlTextReader(configPath));
         }
+
 
     }
 }

@@ -1,21 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>Simple.OpsGenieApi</id>
-        <version>2.0.0.0</version>
+        <id>Simple.OpsGenieApi.SS3971</id>
+        <version>1.0.0.0</version>
         <title>Simple OpsGenieApi</title>
         <authors>Henk J Meulekamp, @hjmeulekamp</authors>
         <owners>Henk J Meulekamp</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple Opsgenie Api Client for Alerts API</description>
-        <releaseNotes>
-			Second release, ack, close raise working;   
-			Now without any depedency on external libraries.   
-			This does mean you need to provide your own JsonSerializer implementation.   
-			See unittests and cli in github repo for example with servicestack.text
-		</releaseNotes>
-        <copyright>Copyright 2015</copyright>
-        <tags>opsgenie alerts</tags>        
+        <releaseNotes>Special build using Servicestack.Text 3.9.71</releaseNotes>
+        <copyright>Copyright 2014</copyright>
+        <tags>opsgenie alerts</tags>
+        <dependencies>
+            <dependency id="ServiceStack.Text" version="[3.9.71, 4.0.0.0)" />          
+        </dependencies>
     </metadata>
     <files>
         <file src="..\source\OpsGenieApi\bin\Release\OpsGenieApi.dll" target="lib\net45\OpsGenieApi.dll" />
