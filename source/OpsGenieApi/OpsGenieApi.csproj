@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack.Text, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -50,6 +46,7 @@
     <Compile Include="ApiListResponse.cs" />
     <Compile Include="ApiResponse.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
+    <Compile Include="Helpers\IJsonSerializer.cs" />
     <Compile Include="Helpers\WebResponseExtensions.cs" />
     <Compile Include="ResponseExtenions.cs" />
     <Compile Include="IApiResponse.cs" />

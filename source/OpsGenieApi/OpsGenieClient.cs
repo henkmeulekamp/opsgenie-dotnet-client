@@ -10,19 +10,20 @@ namespace OpsGenieApi
     // see https://www.opsgenie.com/docs/web-api/alert-api
     public class OpsGenieClient
     {
-        private readonly OpsGenieClientConfig _config;
+        private readonly OpsGenieClientConfig _config;        
+        private readonly HttpHelper _httpHelper;
 
-        public OpsGenieClient(OpsGenieClientConfig config)
+        public OpsGenieClient(OpsGenieClientConfig config, IJsonSerializer serializer)
         {
             _config = config;
+            _httpHelper = new HttpHelper(serializer);
+
         }
 
         public ApiResponse Raise(Alert alert)
         {
             if(alert == null || string.IsNullOrWhiteSpace(alert.Message))
                 throw new ArgumentException("Alert message is required", "alert");
-
-            var client = new HttpHelper();
 
             try
             {
@@ -40,7 +41,7 @@ namespace OpsGenieApi
                 };
 
 
-                var response = client.Post<ApiResponse>(_config.ApiUrl, createAlert);
+                var response = _httpHelper.Post<ApiResponse>(_config.ApiUrl, createAlert);
                 
                 Trace.WriteLine(response);
 
@@ -63,8 +64,6 @@ namespace OpsGenieApi
 
         public ApiResponse Acknowledge(string alertId, string alias, string note)
         {
-            var client = new HttpHelper();
-
             try
             {
                 var closeAlert = new
@@ -74,9 +73,8 @@ namespace OpsGenieApi
                     alias,
                     note,
                 };
-
-
-                var response = client.Post<ApiResponse>(_config.ApiUrl + "/acknowledge", closeAlert);
+                
+                var response = _httpHelper.Post<ApiResponse>(_config.ApiUrl + "/acknowledge", closeAlert);
 
                 Trace.WriteLine(response);
 
@@ -96,7 +94,6 @@ namespace OpsGenieApi
 
         public ApiResponse Close(string alertId, string alias, string note)
         {
-            var client = new HttpHelper();
 
             try
             {
@@ -109,7 +106,7 @@ namespace OpsGenieApi
                 };
 
 
-                var response = client.Post<ApiResponse>(_config.ApiUrl + "/close", closeAlert);
+                var response = _httpHelper.Post<ApiResponse>(_config.ApiUrl + "/close", closeAlert);
 
                 Trace.WriteLine(response);
 
@@ -129,14 +126,12 @@ namespace OpsGenieApi
 
         public ApiListResponse GetLastOpenAlerts(int maxNumber = 20)
         {
-            var url = string.Format("{0}?apiKey={1}&status=open&limit={2}",
-                _config.ApiUrl, _config.ApiKey, maxNumber);
+            var url = $"{_config.ApiUrl}?apiKey={_config.ApiKey}&status=open&limit={maxNumber}";
 
-            var client = new HttpHelper();
-
+     
             try
             {
-                var response = client.Get<ListResponse>(url);
+                var response = _httpHelper.Get<ListResponse>(url);
                 Trace.WriteLine(response);
                 if (response != null)
                 {

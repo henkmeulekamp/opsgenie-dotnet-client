@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using NUnit.Framework;
-using ServiceStack;
 
 namespace OpsGenieApi.UnitTests
 {
+    public static class Extensions
+    {
+        public static object ToJson(this object obj)
+        {
+            return obj != null ? new MyPreferedJsonizer().SerializeToString(obj) : string.Empty;
+        }
+    }
+
+
     [TestFixture]
     public class OpsGenieClientTests
     {
@@ -17,7 +25,7 @@ namespace OpsGenieApi.UnitTests
             {
                 ApiKey = ConfigurationManager.AppSettings["OpsGenieApiKey"],
                 ApiUrl = "https://api.opsgenie.com/v1/json/alert"
-            });
+            }, new MyPreferedJsonizer());
         }
 
 
