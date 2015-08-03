@@ -60,7 +60,7 @@ namespace MyProject.OpsGenieImplementation
     
 }
 ```
-Then provide it using the cosntructor:
+Then provide it using the constructor:
 ```csharp
 	var opsClient = new OpsGenieClient(opsConfig, new OpsGenieSerializer());
 ```
