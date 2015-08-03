@@ -34,6 +34,39 @@ https://www.opsgenie.com/docs/web-api/alert-api
 	}
  
  ```
+ 
+As of v2 a custom JsonSerializer needs to be provided, this to provide flexibility in which version of which jsonserializer is used. See the cli project for usage of ServiceStack.Text v4. If you project is using any other Json serializer, Jil, NewtonSoft just hookup your version in those two methods:  
+```csharp
+using OpsGenieApi.Helpers;
+using ServiceStack.Text;
+
+namespace MyProject.OpsGenieImplementation
+{
+    public class OpsGenieSerializer : IJsonSerializer
+    {
+        public T DeserializeFromString<T>(string json)
+        {
+            //provide you deserializer
+            return JsonSerializer.DeserializeFromString<T>(json);
+        }
+
+        public string SerializeToString<T>(T data)
+        {
+            //provide your serializer
+            return JsonSerializer.SerializeToString(data);
+        }
+    }
+    
+    
+}
+```
+Then provide it using the cosntructor:
+```csharp
+	var opsClient = new OpsGenieClient(opsConfig, new OpsGenieSerializer());
+```
+
+
+ 
  Published the library to nuget for easy reuse:
 ```
 Install-Package Simple.OpsGenieApi
