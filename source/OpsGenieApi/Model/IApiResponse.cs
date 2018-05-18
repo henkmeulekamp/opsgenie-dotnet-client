@@ -1,4 +1,4 @@
-﻿namespace OpsGenieApi
+﻿namespace OpsGenieApi.Model
 {
     public interface IApiResponse
     {

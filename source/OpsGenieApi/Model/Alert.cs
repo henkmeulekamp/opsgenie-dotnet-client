@@ -1,13 +1,25 @@
 using System.Collections.Generic;
 
-namespace OpsGenieApi
+namespace OpsGenieApi.Model
 {
+    /// <summary>
+    /// https://docs.opsgenie.com/docs/alert-api#section-create-alert
+    /// </summary>
     public class Alert
     {
+        public Alert()
+        {
+            Teams = new List<string>();
+            Recipients = new List<string>();
+            Actions = new List<string>();
+            Tags = new List<string>();
+        }
+
         /// <summary>
         /// Alert message, limited to 130 chars
         /// </summary>
         public string Message { get; set; }  
+
         public string Description { get; set; }
         public string Source { get; set; }
         public string Entity { get; set; }
