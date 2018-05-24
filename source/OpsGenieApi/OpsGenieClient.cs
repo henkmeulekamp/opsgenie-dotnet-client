@@ -101,11 +101,12 @@ namespace OpsGenieApi
         private static IEnumerable<Responder> CreateResponders(IEnumerable<string> alertTeams,
             IEnumerable<string> alertRecipients)
         {
-            foreach (var team in alertTeams)
+            foreach (var team in alertTeams ?? Enumerable.Empty<string>())
                 yield return new Responder { name = team, type = "team"};
 
-            foreach (var recipient in alertRecipients)
+            foreach (var recipient in alertRecipients ?? Enumerable.Empty<string>())
                 yield return new Responder { name = recipient, type = "user"};
+
         }
 
      
