@@ -52,7 +52,6 @@
     <Compile Include="Model\ApiResponse.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
     <Compile Include="Helpers\IJsonSerializer.cs" />
-    <Compile Include="Model\IApiResponse.cs" />
     <Compile Include="Model\ListResponse.cs" />
     <Compile Include="OpsGenieClient.cs" />
     <Compile Include="OpsGenieClientConfig.cs" />

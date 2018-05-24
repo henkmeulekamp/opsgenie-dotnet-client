@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using CommandLine;
-using OpsGenieApi;
 using OpsGenieApi.Model;
 
 namespace OpsGenieCli

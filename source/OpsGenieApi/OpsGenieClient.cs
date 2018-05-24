@@ -10,7 +10,7 @@ using OpsGenieApi.Model;
 namespace OpsGenieApi
 {
     // Implements alert api opsgenie
-    // see https://www.opsgenie.com/docs/web-api/alert-api
+    // see API docs: https://docs.opsgenie.com/docs/api-overview
     public class OpsGenieClient
     {
         private readonly OpsGenieClientConfig _config;
@@ -27,7 +27,7 @@ namespace OpsGenieApi
         public ApiResponse Raise(Alert alert)
         {
            if (alert == null || string.IsNullOrWhiteSpace(alert.Message))
-                throw new ArgumentException("Alert message is required", "alert");
+                throw new ArgumentException("Alert message is required", nameof(alert));
 
     
                 var createAlert = new

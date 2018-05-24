@@ -16,7 +16,5 @@ namespace OpsGenieCli
             var serializer = new XmlSerializer(typeof(OpsGenieClientConfig));
             return (OpsGenieClientConfig)serializer.Deserialize(new XmlTextReader(configPath));
         }
-
-
     }
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace OpsGenieApi.Model
 {
-    public class ApiResponse : IApiResponse
+    public class ApiResponse 
     {
         public string Code { get; set; }
         public string Status { get; set; }
