@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Simple.OpsGenieApi</id>
-        <version>2.0.0.0</version>
+        <version>3.0.0.0</version>
         <title>Simple OpsGenieApi</title>
         <authors>Henk J Meulekamp, @hjmeulekamp</authors>
         <owners>Henk J Meulekamp</owners>
@@ -18,6 +18,6 @@
         <tags>opsgenie alerts</tags>        
     </metadata>
     <files>
-        <file src="..\source\OpsGenieApi\bin\Release\OpsGenieApi.dll" target="lib\net45\OpsGenieApi.dll" />
+        <file src="..\source\OpsGenieApi\bin\Release\OpsGenieApi.dll" target="lib\net47\OpsGenieApi.dll" />
     </files>
 </package>
