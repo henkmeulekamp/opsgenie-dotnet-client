@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Threading;
 using NUnit.Framework;
+using OpsGenieApi.Model;
 
 namespace OpsGenieApi.UnitTests
 {
@@ -13,8 +15,7 @@ namespace OpsGenieApi.UnitTests
             return obj != null ? new MyPreferedJsonizer().SerializeToString(obj) : string.Empty;
         }
     }
-
-
+    
     [TestFixture]
     public class OpsGenieClientTests
     {
@@ -23,8 +24,7 @@ namespace OpsGenieApi.UnitTests
         {
             return new OpsGenieClient(new OpsGenieClientConfig
             {
-                ApiKey = ConfigurationManager.AppSettings["OpsGenieApiKey"],
-                ApiUrl = "https://api.opsgenie.com/v1/json/alert"
+                ApiKey = ConfigurationManager.AppSettings["OpsGenieApiKey"]
             }, new MyPreferedJsonizer());
         }
 
@@ -45,7 +45,7 @@ namespace OpsGenieApi.UnitTests
 
             var response = client.GetLastOpenAlerts();
             Trace.WriteLine(response.ToJson());
-            Assert.IsTrue(response.Ok);
+            Assert.IsTrue(response.requestId != null);
         }
 
 
@@ -56,7 +56,7 @@ namespace OpsGenieApi.UnitTests
 
             var response = client.Raise(new Alert
             {
-                Alias = new Guid().ToString(),
+                Alias = Guid.NewGuid().ToString(),
                 Description = "Unittest alert",
                 Source = "Developer",
                 Message = "Testing api",
@@ -105,13 +105,17 @@ namespace OpsGenieApi.UnitTests
 
             Trace.WriteLine(response.ToJson());
             Assert.IsTrue(response.Ok);
+            //give them some time to compleet
+            Thread.Sleep(TimeSpan.FromMilliseconds(250));
+            var alert = client.GetStatus(response.requestId);
 
-            var responseClose = client.Close(response.AlertId, null, "Closing alert, all ok");
+            Assert.IsTrue(alert.data != null && alert.data.success);
+            
+            var responseClose = client.Close(alert.data.alertId, null, "Closing alert, all ok");
 
-            Trace.WriteLine(responseClose.ToJson());
-            Assert.IsTrue(responseClose.Ok);
-
-        }
+            Assert.IsTrue(responseClose);
+            
+       }
 
         [Test]
         public void CloseByAlias()
@@ -133,8 +137,7 @@ namespace OpsGenieApi.UnitTests
 
             var responseClose = client.Close(null, alias, "Closing alert, all ok");
 
-            Trace.WriteLine(responseClose.ToJson());
-            Assert.IsTrue(responseClose.Ok);
+            Assert.IsTrue(responseClose);
 
         }
 
@@ -144,10 +147,10 @@ namespace OpsGenieApi.UnitTests
         public void AckAndClose()
         {
             var client = CreateClient();
-
+            var alias = Guid.NewGuid().ToString();
             var response = client.Raise(new Alert
             {
-                Alias = Guid.NewGuid().ToString(),
+                Alias = alias,
                 Description = "Unittest alert",
                 Source = "Developer",
                 Message = "Testing api - CloseByAlertId",
@@ -157,15 +160,13 @@ namespace OpsGenieApi.UnitTests
             Trace.WriteLine(response.ToJson());
             Assert.IsTrue(response.Ok, "Should succesfully create new alert");
 
-            var responseAck = client.Acknowledge(response.AlertId, null, "Ack, working on it");
+            var responseAck = client.Acknowledge(null, alias, "Ack, working on it");
             
-            Trace.WriteLine(responseAck.ToJson());
-            Assert.IsTrue(responseAck.Ok, "Should succesfully ackowledge");
+            Assert.IsTrue(responseAck, "Should succesfully ackowledge");
 
-            var responseClose = client.Close(response.AlertId, null, "Closing alert, all ok");
+            var responseClose = client.Close(null, alias, "Closing alert, all ok");
 
-            Trace.WriteLine(responseClose.ToJson());
-            Assert.IsTrue(responseClose.Ok, "Should succesfully close");
+            Assert.IsTrue(responseClose, "Should succesfully close");
 
         }
 

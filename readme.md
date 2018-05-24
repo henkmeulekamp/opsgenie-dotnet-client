@@ -4,8 +4,8 @@ Simple C# dotnet client for OpsGenie Alert Api.
   
 Including a cli client to raise, ack and resolve alerts. 
   
-See OpsGenie alert api documentation:  
-https://www.opsgenie.com/docs/web-api/alert-api
+See OpsGenie alert api documentation based on the v2 opsgenie restful API:
+https://docs.opsgenie.com/docs/api-overview
   
  
 ## 
@@ -15,8 +15,7 @@ https://www.opsgenie.com/docs/web-api/alert-api
  
     var opsClient = new OpsGenieClient(new OpsGenieClientConfig
 	{
-	    ApiKey = ".. your api key",
-	    ApiUrl = "https://api.opsgenie.com/v1/json/alert"
+	    ApiKey = ".. your api key"
 	});
 	
 	var response = opsClient.Raise(new Alert 
@@ -78,6 +77,7 @@ For integration with a monitoring tool with limited options to call external API
 With this you can resolve, acknowledge and open incidents using command line. 
 See OpsGeniecli project. Commandline options:  
  - c: config, config file, see format below
+ - k: apikey, instead of above option
  - s: source, source of alert
  - m: message, message/details of incident
  - a: action, Raise, Acknowledge, Resolve
@@ -94,6 +94,10 @@ Example - acknowledge:
 Example - close/resolve:  
 `opsgeniecli -c opsgenie.config -a resolve -n "new resolve note with more words" -i alert1`
   
+Example -  create new alert with apikey (abc1235678) instead of config file:  
+`opsgeniecli -k abc1235678 -a resolve -n "new resolve note with more words" -i alert1`
+  
+
 Example config file:
 ```
 <?xml version="1.0" encoding="utf-8"?>
@@ -109,8 +113,8 @@ Example config file:
 
 It has the following nuget dependencies:
 
-- servicestack.client version v4.0.42 
-- CommandLineParser  version 1.9.71
+- servicestack.client version v5.*
+- CommandLineParser  version 1.9.72 
   
 
 ## TODO
