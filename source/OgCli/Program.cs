@@ -14,13 +14,14 @@ namespace OpsGenieCli
             if (Parser.Default.ParseArguments(args, options))
             {
 
-                if (!File.Exists(options.Config))
+                if (!File.Exists(options.Config) && string.IsNullOrWhiteSpace(options.Key))
                 {
                     Console.WriteLine("Config file not found.");                   
                     return;
                 }
 
-                var opsGenieClient = OpsGenieHelper.CreateOpsGenieClient(OpsGenieHelper.GetOpsGenieConfig(options.Config));
+                var opsGenieClient = OpsGenieHelper.CreateOpsGenieClient(
+                    OpsGenieHelper.GetOpsGenieConfig(options.Config, options.Key));
                 
                 switch (options.Action)
                 {
@@ -54,6 +55,9 @@ namespace OpsGenieCli
         {
             [Option('c', "config", DefaultValue = "OpsGenie.config")]
             public string Config { get; set; }
+
+            [Option('k', "apikey", DefaultValue = "")]
+            public string Key { get; set; }
 
             [Option('s', "source", DefaultValue = "Sourcet")]
             public string Source { get; set; }
