@@ -10,7 +10,7 @@ https://docs.opsgenie.com/docs/api-overview
  
 ## 
   
- Exampl Raise, Acknowledge and Close:
+ Example Raise, Acknowledge and Close:
  ```csharp
  
     var opsClient = new OpsGenieClient(new OpsGenieClientConfig
@@ -18,7 +18,7 @@ https://docs.opsgenie.com/docs/api-overview
 	    ApiKey = ".. your api key"
 	});
 	
-	var response = opsClient.Raise(new Alert 
+	var response = await opsClient.Raise(new Alert 
 	{
 	    Alias = "alert2", 
 	    Source = "Test", 
@@ -27,9 +27,9 @@ https://docs.opsgenie.com/docs/api-overview
 	
 	if (response.Ok)
 	{
-	    var respAck =  opsClient.Acknowledge(response.AlertId, null, "Working on it!");
+	    var respAck =  await opsClient.Acknowledge(response.AlertId, null, "Working on it!");
 	
-	    var respClose = opsClient.Close(response.AlertId, null, "Fixed by ..");
+	    var respClose = await opsClient.Close(response.AlertId, null, "Fixed by ..");
 	}
  
  ```
