@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using OpsGenieApi.Helpers;
 using OpsGenieApi.Model;
 
@@ -24,7 +25,7 @@ namespace OpsGenieApi
             _httpHelper = new HttpHelper(config.ApiKey);
         }
 
-        public ApiResponse Raise(Alert alert)
+        public async Task<ApiResponse> Raise(Alert alert)
         {
            if (alert == null || string.IsNullOrWhiteSpace(alert.Message))
                 throw new ArgumentException("Alert message is required", nameof(alert));
@@ -45,8 +46,8 @@ namespace OpsGenieApi
 
                 Trace.WriteLine(json);
 
-                var httpResponse = _httpHelper.Client.PostAsync(_config.ApiUrl,
-                    new StringContent(json, Encoding.UTF8, "application/json")).Result;
+                var httpResponse = await _httpHelper.Client.PostAsync(_config.ApiUrl,
+                    new StringContent(json, Encoding.UTF8, "application/json"));
 
                 if (!httpResponse.IsSuccessStatusCode)
                 {
@@ -58,8 +59,10 @@ namespace OpsGenieApi
                     };
                 }
 
+                var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+
                 var response =
-                    _serializer.DeserializeFromString<ApiResponse>(httpResponse.Content.ReadAsStringAsync().Result);
+                    _serializer.DeserializeFromString<ApiResponse>(jsonResponse);
                 response.Code = ((int) httpResponse.StatusCode).ToString();
                 response.Ok = true;
                 return response;
@@ -68,7 +71,7 @@ namespace OpsGenieApi
 
         //https://api.opsgenie.com/v2/alerts/requests/:requestId
 
-        public ApiV2Response GetStatus(string requestId)
+        public async Task<ApiV2Response> GetStatus(string requestId)
         {
             if (string.IsNullOrWhiteSpace(requestId))
                 throw new ArgumentException("requestId is mandatory", nameof(requestId));
@@ -80,7 +83,7 @@ namespace OpsGenieApi
 
                 Trace.WriteLine(url);
 
-                var responseBody = _httpHelper.Client.GetStringAsync(url).Result;
+                var responseBody = await _httpHelper.Client.GetStringAsync(url);
 
                 return _serializer.DeserializeFromString<ApiV2Response>(responseBody);
                 
@@ -111,7 +114,7 @@ namespace OpsGenieApi
 
      
 
-        private bool AlertAction(string action, string alertId, string alias, string note)
+        private async Task<bool> AlertAction(string action, string alertId, string alias, string note)
         {
             var url = _config.ApiUrl + "/" + (
                           !string.IsNullOrEmpty(alertId)
@@ -128,10 +131,10 @@ namespace OpsGenieApi
 
             Trace.WriteLine(url + "\n" + json);
 
-            var httpResponse = _httpHelper.Client.PostAsync(url,
-                new StringContent(json, Encoding.UTF8, "application/json")).Result;
+            var httpResponse = await _httpHelper.Client.PostAsync(url,
+                new StringContent(json, Encoding.UTF8, "application/json"));
 
-            var responseData = httpResponse.Content.ReadAsStringAsync().Result;
+            var responseData = await httpResponse.Content.ReadAsStringAsync();
 
             Trace.WriteLine(responseData);
 
@@ -139,36 +142,35 @@ namespace OpsGenieApi
 
             return resp.requestId != null;
         }
-
-        public bool Acknowledge(string alertId, string alias, string note)
+        public async Task<bool> Acknowledge(string alertId, string alias, string note)
         {
-            return AlertAction("acknowledge", alertId, alias, note);
+            return await AlertAction("acknowledge", alertId, alias, note);
         }
 
-        public bool UnAcknowledge(string alertId, string alias, string note)
+        public async Task<bool> UnAcknowledge(string alertId, string alias, string note)
         {
-            return AlertAction("unacknowledge", alertId, alias, note);
+            return await AlertAction("unacknowledge", alertId, alias, note);
         }
 
-        public bool Close(string alertId, string alias, string note)
+        public async Task<bool> Close(string alertId, string alias, string note)
         {
-            return AlertAction("close", alertId, alias, note);
-
-        }
-
-        public bool AddNote(string alertId, string alias, string note)
-        {
-            return AlertAction("notes", alertId, alias, note);
+            return await AlertAction("close", alertId, alias, note);
 
         }
 
-        public ListResponse GetLastOpenAlerts(int maxNumber = 20)
+        public async Task<bool> AddNote(string alertId, string alias, string note)
+        {
+            return await AlertAction("notes", alertId, alias, note);
+
+        }
+
+        public async Task<ListResponse> GetLastOpenAlerts(int maxNumber = 20)
         {
             var url = _config.ApiUrl;
 
             Trace.WriteLine(url);
 
-            var responseBody = _httpHelper.Client.GetStringAsync(url).Result;
+            var responseBody = await _httpHelper.Client.GetStringAsync(url);
 
             return _serializer.DeserializeFromString<ListResponse>(responseBody);
 
