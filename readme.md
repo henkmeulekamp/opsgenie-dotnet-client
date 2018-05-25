@@ -18,18 +18,23 @@ https://docs.opsgenie.com/docs/api-overview
 	    ApiKey = ".. your api key"
 	});
 	
+	// Opsgenie V2 api is queuing processing message, alertId is not immidiatly returned
+	// use unqiue alias to sequence calls without requesting incident status and retrieve alertId
+
+	var uniqueAlias = "alert123";
+	
 	var response = await opsClient.Raise(new Alert 
 	{
-	    Alias = "alert2", 
+	    Alias = uniqueAlias, 
 	    Source = "Test", 
 	    Message = "All systems down"
 	});
 	
 	if (response.Ok)
 	{
-	    var respAck =  await opsClient.Acknowledge(response.AlertId, null, "Working on it!");
+	    var respAck =  await opsClient.Acknowledge(null, uniqueAlias, "Working on it!");
 	
-	    var respClose = await opsClient.Close(response.AlertId, null, "Fixed by ..");
+	    var respClose = await opsClient.Close(null, uniqueAlias, "Fixed by ..");
 	}
  
  ```
