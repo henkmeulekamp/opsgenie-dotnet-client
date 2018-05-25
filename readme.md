@@ -102,7 +102,6 @@ Example config file:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <OpsGenieClientConfig>
-	 <ApiUrl>https://api.opsgenie.com/v1/json/alert</ApiUrl>
 	 <ApiKey> .. your api key .. </ApiKey>	
 </OpsGenieClientConfig>
 

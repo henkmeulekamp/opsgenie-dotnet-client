@@ -37,13 +37,13 @@ namespace OpsGenieCli
                                              ? options.Recipients.Split(new []{','},StringSplitOptions.RemoveEmptyEntries).ToList()
                                              : null
                             }
-                            );
+                            ).Wait();
                         break;
                     case Action.Acknowledge:
-                        opsGenieClient.Acknowledge(null, options.Alias, options.Note);
+                        opsGenieClient.Acknowledge(null, options.Alias, options.Note).Wait();
                         break;
                     case Action.Resolve:
-                        opsGenieClient.Close(null, options.Alias, options.Note);
+                        opsGenieClient.Close(null, options.Alias, options.Note).Wait();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -88,7 +88,6 @@ namespace OpsGenieCli
             Acknowledge,
             Resolve
         }
-
 
     }
 }
